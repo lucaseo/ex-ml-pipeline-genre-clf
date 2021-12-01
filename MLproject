@@ -1,1 +1,23 @@
+# The name section specifies the name for the environment in which this code will be executed.
 name: genre_classification_train
+
+
+
+# entry_points lists all the available scripts and commands that the user can run.
+# entry_points MUST always have a main key which specifies the default script to run
+# (and can optionally have other entry points)
+entry_points:
+
+  # For each entry point we have the parameters section and the command section
+  # specifying respectively the parameters for the command and how to run the command.
+  main:
+    parameters:
+      hydra_options:
+        # description is just a string that describes the parameter
+        descripiton: Hydra parameters to override
+        type:
+        default: ''
+
+    # command specify how to invoke the script or command that we need to run
+    command: >-
+      python main.py $(echo {hydra_options})
