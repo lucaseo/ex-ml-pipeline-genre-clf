@@ -1,0 +1,77 @@
+import argparse
+import logging
+import pathlib
+import tempfile
+
+import wandb
+import requests
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s%")
+logger = logging.getLogger()
+
+
+def go(args):
+
+    basename = pathlib.Path(args.file_url).name.split("?")[0].split("#")[0]
+
+    logger.info("Downloading {} ...".format(args.file_url))
+
+    with tempfile.NamedTemporaryFile(mode="wb+") as fp:
+
+        logger.info("Creating run")
+        with wandb.init(job_type="download_data") as run:
+
+            # Download the file streaming and write to open temp file.
+            # This is to download file larger than the available memory.
+            # Inorder to to this, NamedTemporaryFile is destroyed at the end of the context so we don't leave anyting in behind, and file gets removed in case of any errors.
+            with requests.get(args.file_url, stream=True) as r:
+                for chunk in r.iter_content(chunk_size=8192):
+                    fp.write(chunk)
+
+            # Make sure the file has been written to disk before uploading to W&B
+            # https://velog.io/@janeljs/python-print-sep-end-file-flush
+            fp.flush()
+
+            logger.info("Creating artifact")
+            artifact = wandb.Artifact(
+                name = args.artifact_name,
+                type = args.artifact_type,
+                description = args.artifact_description,
+                metadata = {
+                    'original_url': args.file_url
+                }
+            )
+            artifact.add_file(fp.name, name=basename)
+
+            logger.info("Logging artifact")
+            run.log_artifact(artifact)
+
+            artifact.wait()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Download a file and upload it as an artifact to W&B", fromfile_prefix_chars="@"
+    )
+
+    parser.add_argument(
+        "--file_url", type=str, help="URL to the input file", required=True
+    )
+
+    parser.add_argument(
+        "--artifact_name", type=str, help="Name for the artifact", required=True
+    )
+
+    parser.add_argument(
+        "--artifact_type", type=str, help="Type for the artifact", required=True
+    )
+
+    parser.add_argument(
+        "--artifact_description",
+        type=str,
+        help="Description for the artifact",
+        required=True,
+    )
+
+    args = parser.parse_args()
+
+    go(args)

@@ -32,8 +32,15 @@ def main(config):
     # 1. Download step
     if "download" in steps_to_execute:
         mlflow.run(
-            os.path.join(root_path, "download")
-
+            os.path.join(root_path, "download"),
+            "main",
+            parameters={
+                "file_url": config["data"]["file_url"],
+                "artifact_name": "raw_data.parquet",
+                "artifact_type": "raw_data",
+                "artifact_description": "Data as download"
+            },
+            use_conda=False
         )
 
     # 2. Preprocess step
