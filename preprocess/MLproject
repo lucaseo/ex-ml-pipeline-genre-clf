@@ -1,0 +1,15 @@
+name: preprocess
+
+entry_points:
+  main:
+    parameters:
+      input_artifact:
+      artifact_name:
+      artifact_type:
+      artifact_description:
+
+    command:
+      python preprocess.py --input_artifact {input_artifact} \
+                           --artifact_name {artifact_name} \
+                           --artifact_type {artifact_type} \
+                           --artifact_description {artifact_description}

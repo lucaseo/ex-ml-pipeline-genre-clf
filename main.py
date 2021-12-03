@@ -33,7 +33,7 @@ def main(config):
     if "download" in steps_to_execute:
         mlflow.run(
             os.path.join(root_path, "download"),
-            "main",
+            "main",    # entrypoint to run
             parameters={
                 "file_url": config["data"]["file_url"],
                 "artifact_name": "raw_data.parquet",
@@ -44,6 +44,14 @@ def main(config):
         )
 
     # 2. Preprocess step
+    if "preprocess" in steps_to_execute:
+        mlflow.run(
+            os.path.join(root_path, "preprocess"),
+            "main",
+            parameters={
+                
+            }
+        )
 
     # 3. Validation step
 
