@@ -75,8 +75,13 @@ def main(config):
             os.path.join(root_path, "segregate"),
             "main",
             parameters={
-
-            }
+                "input_artifact": "preprocessed_data.csv:latest",
+                "artifact_root": "data",
+                "artifact_type": "segregated_data",
+                "test_size": config["data"]["test_size"],
+                "stratify": config["data"]["stratify"]
+            },
+            use_conda=False
         )
 
     # 5. Modelling step
