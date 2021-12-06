@@ -1,0 +1,5 @@
+name: segregate
+
+entry_points:
+  main:
+  command:
