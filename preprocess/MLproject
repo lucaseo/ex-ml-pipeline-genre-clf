@@ -4,9 +4,21 @@ entry_points:
   main:
     parameters:
       input_artifact:
+        description: Fully qualified name for the artifact
+        type: str
+
       artifact_name:
+        description: Name for the W&B artifact that will be created
+        type: str
+
       artifact_type:
+        description: Type of the artifact to create
+        type: str
+        default: raw_data
+
       artifact_description:
+        description: Description for the artifact
+        type: str
 
     command:
       python preprocess.py --input_artifact {input_artifact} \
