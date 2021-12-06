@@ -49,13 +49,33 @@ def main(config):
             os.path.join(root_path, "preprocess"),
             "main",
             parameters={
-                
-            }
+                "input_artifact" : "raw_data.parquet:latest",
+                "artifact_name" : "preprocessed_data.csv",
+                "artifact_type" : "preprocessed_data",
+                "artifact_description" : "Preprocessing applied data"
+            },
+            use_conda=False
         )
 
     # 3. Validation step
+    if "validate_data" in steps_to_execute:
+        mlflow.run(
+            os.path.join(root_path, "validate_data"),
+            "main",
+            parameters={
+
+            }
+        )
 
     # 4. Segregation step
+    if "segregate" in steps_to_execute:
+        mlflow.run(
+            os.path.join(root_path, "segregate"),
+            "main",
+            parameters={
+
+            }
+        )
 
     # 5. Modelling step
 
