@@ -4,7 +4,7 @@ main:
   execute_steps:
     - download
     - preprocess
-    - check_data
+    - validate_data
     - segregate
     - random_forest
     - evaluate
