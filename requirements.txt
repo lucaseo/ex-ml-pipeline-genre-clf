@@ -1,0 +1,14 @@
+wandb
+scikit-learn
+scipy
+pytest
+pyarrow
+requests
+seaborn
+pandas
+numpy
+fastparquet
+hydra-core
+matplotlib
+pyyaml
+omegaconf
