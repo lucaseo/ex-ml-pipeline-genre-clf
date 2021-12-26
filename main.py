@@ -14,7 +14,7 @@ from omegaconf import DictConfig, OmegaConf
 def main(config: DictConfig):
 
     # Setup the wandb experiment.
-    os.environ["WNADB_PROJECT"] = config["main"]["project_name"]
+    os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
 
 
     # Get the path at the root of the MLflow project with this:
@@ -118,3 +118,6 @@ def main(config: DictConfig):
             },
             use_conda=False
         )
+
+if __name__ == "__main__":
+    main()

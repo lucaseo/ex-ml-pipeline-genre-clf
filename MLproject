@@ -14,8 +14,8 @@ entry_points:
     parameters:
       hydra_options:
         # description is just a string that describes the parameter
-        descripiton: Hydra parameters to override
-        type:
+        description: Hydra parameters to override
+        type: str
         default: ''
 
     # command specify how to invoke the script or command that we need to run

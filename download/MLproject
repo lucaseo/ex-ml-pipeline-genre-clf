@@ -2,7 +2,7 @@ name: download_data
 
 entry_points:
   main:
-    paramters:
+    parameters:
       file_url:
         description: URL of the file to download
         type: uri

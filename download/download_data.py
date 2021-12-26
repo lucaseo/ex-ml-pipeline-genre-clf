@@ -6,9 +6,8 @@ import tempfile
 import wandb
 import requests
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s%")
+logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
-
 
 def go(args):
 
