@@ -6,8 +6,8 @@ main:
     - preprocess
     - validate_data
     - segregate
-    - random_forest
-    - evaluate
+    - model_train
+    - model_pred
 
   # This seed will be used to seed the random number generator
   # to ensure repeatibility of the data splits and other
@@ -15,7 +15,7 @@ main:
   random_seed: 42
 
 data:
-  file_url: "https://github.com/udacity/nd0821-c2-build-model-workflow-exercises/blob/master/lesson-2-data-exploration-and-preparation/exercises/exercise_4/starter/genres_mod.parquet?raw=true"
+  file_url: "https://github.com/udacity/nd0821-c2-build-model_train-workflow-exercises/blob/master/lesson-2-data-exploration-and-preparation/exercises/exercise_4/starter/genres_mod.parquet?raw=true"
   reference_dataset: "exercise_14/preprocessed_data.csv:latest"
   # Threshold for Kolomorov-Smirnov test
   ks_alpha: 0.05
@@ -25,7 +25,7 @@ data:
   # in train/test or in train/val
   stratify: genre
 
-random_forest_pipeline:
+model_pipeline:
   random_forest:
     n_estimators: 100
     criterion: 'gini'

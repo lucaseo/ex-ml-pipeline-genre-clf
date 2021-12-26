@@ -2,7 +2,7 @@ import os
 
 import mlflow
 import hydra
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 
 
 
@@ -11,7 +11,7 @@ from omegaconf import DictConfig
 ## attach wandb
 ## attach each step
 @hydra.main(config_name="config")
-def main(config):
+def main(config: DictConfig):
 
     # Setup the wandb experiment.
     os.environ["WNADB_PROJECT"] = config["main"]["project_name"]
@@ -85,7 +85,36 @@ def main(config):
         )
 
     # 5. Modelling step
+    if "model_train" in steps_to_execute:
+        # Serialize decision tree configuration
+        model_config = os.path.abspath("model_config.yml")
+
+        with open(model_config, "w+") as fp:
+            fp.write(OmegaConf.to_yaml(config["model_pipeline"]))
+
+        _ = mlflow.run(
+            os.path.join(root_path, "model_train"),
+            "main",
+            parameters={
+                "train_data": "data_train.csv:latest",
+                "model_config": model_config,
+                "export_artifact": config["model_pipeline"]["export_artifact"],
+                "random_seed": config["main"]["random_seed"],
+                "val_size": config["data"]["test_size"],
+                "stratify": config["data"]["stratify"]
+            },
+            use_conda=False
+        )
 
     # 6. Evaluation step
+    if "model_pred" in steps_to_execute:
 
-    pass
+        _ = mlflow.run(
+            os.path.join(root_path, "model_pred"),
+            "main",
+            parameters={
+                "model_export": f"{config['model_pipeline']['export_artifact']}:latest",
+                "test_data": "data_test.csv:latest"
+            },
+            use_conda=False
+        )
