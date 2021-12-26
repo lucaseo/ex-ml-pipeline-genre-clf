@@ -12,5 +12,5 @@ entry_points:
         type: str
 
     command: >-
-      python run.py --model_export {model_export} \
+      python pred.py --model_export {model_export} \
                     --test_data {test_data}

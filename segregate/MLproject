@@ -26,7 +26,7 @@ entry_points:
         default: "null"
 
     command: >-
-      python run.py --input_artifact {input_artifact} \
+      python split_data.py --input_artifact {input_artifact} \
                     --artifact_root {artifact_root} \
                     --artifact_type {artifact_type} \
                     --test_size {test_size} \

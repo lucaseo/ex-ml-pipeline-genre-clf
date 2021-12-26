@@ -5,17 +5,14 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 
 
-
 ## Todo
 ## add hydra configuration
 ## attach wandb
 ## attach each step
 @hydra.main(config_name="config")
-def main(config: DictConfig):
-
+def go(config: DictConfig):
     # Setup the wandb experiment.
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
-
 
     # Get the path at the root of the MLflow project with this:
     # https://hydra.cc/docs/tutorials/basic/running_your_app/working_directory/
@@ -31,9 +28,9 @@ def main(config: DictConfig):
     # Chained pipeline
     # 1. Download step
     if "download" in steps_to_execute:
-        mlflow.run(
+        _ = mlflow.run(
             os.path.join(root_path, "download"),
-            "main",    # entrypoint to run
+            "main",  # entrypoint to run
             parameters={
                 "file_url": config["data"]["file_url"],
                 "artifact_name": "raw_data.parquet",
@@ -45,33 +42,34 @@ def main(config: DictConfig):
 
     # 2. Preprocess step
     if "preprocess" in steps_to_execute:
-        mlflow.run(
+        _ = mlflow.run(
             os.path.join(root_path, "preprocess"),
             "main",
             parameters={
-                "input_artifact" : "raw_data.parquet:latest",
-                "artifact_name" : "preprocessed_data.csv",
-                "artifact_type" : "preprocessed_data",
-                "artifact_description" : "Preprocessing applied data"
+                "input_artifact": "raw_data.parquet:latest",
+                "artifact_name": "preprocessed_data.csv",
+                "artifact_type": "preprocessed_data",
+                "artifact_description": "Preprocessing applied data"
             },
             use_conda=False
         )
 
     # 3. Validation step
     if "validate_data" in steps_to_execute:
-        mlflow.run(
+        _ = mlflow.run(
             os.path.join(root_path, "validate_data"),
             "main",
             parameters={
                 "reference_artifact": config['data']['reference_dataset'],
                 "sample_artifact": "preprocessed_data.csv:latest",
                 "ks_alpha": config['data']['ks_alpha']
-            }
+            },
+            use_conda=False
         )
 
     # 4. Segregation step
     if "segregate" in steps_to_execute:
-        mlflow.run(
+        _ = mlflow.run(
             os.path.join(root_path, "segregate"),
             "main",
             parameters={
@@ -108,7 +106,6 @@ def main(config: DictConfig):
 
     # 6. Evaluation step
     if "model_pred" in steps_to_execute:
-
         _ = mlflow.run(
             os.path.join(root_path, "model_pred"),
             "main",
@@ -119,5 +116,6 @@ def main(config: DictConfig):
             use_conda=False
         )
 
+
 if __name__ == "__main__":
-    main()
+    go()

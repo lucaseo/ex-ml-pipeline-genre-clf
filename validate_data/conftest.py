@@ -32,7 +32,7 @@ def data(request):
     return sample_1, sample_2
 
 
-@pytest.fixture(score='session')
+@pytest.fixture(scope='session')
 def ks_alpha(request):
     ks_alpha = request.config.option.ks_alpha
 

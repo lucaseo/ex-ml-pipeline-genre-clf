@@ -5,7 +5,6 @@ import os
 import pandas as pd
 import wandb
 
-
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
@@ -24,18 +23,18 @@ def go(args):
 
     # A minimal feature engineering step: a new feature
     logger.info("Feature engineering")
-    df['title'].fillna("", inplace=True)
-    df['song_title'].fillna("", inplace=True)
-    df['text_feature'] = df['title'] + df['song_name']
+    df['title'].fillna(value='', inplace=True)
+    df['song_name'].fillna(value='', inplace=True)
+    df['text_feature'] = df['title'] + ' ' + df['song_name']
 
-    filename = "processed_data.csv"
+    filename: str = "processed_data.csv"
     df.to_csv(filename)
 
     # save to artifact in wandb
     artifact = wandb.Artifact(
-        name = args.artifact_name,
-        type = args.artifact_type,
-        description = args.artifact_description,
+        name=args.artifact_name,
+        type=args.artifact_type,
+        description=args.artifact_description,
     )
 
     artifact.add_file(filename)
@@ -47,7 +46,6 @@ def go(args):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument(

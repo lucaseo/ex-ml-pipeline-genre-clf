@@ -113,7 +113,7 @@ def export_model(run, pipe, used_columns, X_val, val_pred, export_artifact):
         artifact = wandb.Artifact(
             export_artifact,
             type="model_export",
-            description="Random Forest pipeline export",
+            description="Model pipeline export",
         )
         artifact.add_dir(export_path)
 
