@@ -33,10 +33,33 @@ mlflow run --no-conda .
 - Q. Is this work in private repository? Need to try it out.
 
 
-### 6. Deploy MLflow pipeline
+### 6. Inference
 
+1. fetch model from wandb
+    ```bash
+    wandb artifact get genre_classification_prod/model_export:prod --root model
+    ```
 
+2. Deploy inference server
+   - in batch
+     - prepare test data
+       ```bash
+       wandb artifact get genre_classification_prod/data_test.csv:latest
+       ```
 
+     - run model on test dataset
+       ```bash
+       mlflow models predict --no-conda \
+                     -t csv \
+                     -i ./artifacts/data_test.csv:v0/data_test.csv \
+                     -m model
+       ```
+
+   - in online
+     - set up REST API
+       ```bash
+       mlflow models serve --no-conda -m model &
+       ```
 
 
 ## Reference
