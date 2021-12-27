@@ -1,5 +1,5 @@
 main:
-  project_name: exercise_14
+  project_name: udacity-ml-pipeline-genre-clf
   experiment_name: dev
   execute_steps:
     - download
@@ -33,7 +33,7 @@ model_pipeline:
     min_samples_split: 2
     min_samples_leaf: 1
     min_weight_fraction_leaf: 0.0
-    max_features: 'auto'
+    max_features: 10
     max_leaf_nodes: null
     min_impurity_decrease: 0.0
     min_impurity_split: null
