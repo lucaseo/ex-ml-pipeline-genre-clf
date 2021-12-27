@@ -34,3 +34,11 @@ mlflow run --no-conda .
 
 
 ### 6. Deploy MLflow pipeline
+
+
+
+
+
+## Reference
+
+- [How to use pytest (KR)](https://jangseongwoo.github.io/test/pytest_basic/)
